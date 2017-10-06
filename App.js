@@ -1,57 +1,73 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
   Text,
+  TextInput,
   View
 } from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    instructions: {
+        textAlign: 'center',
+        color: '#333333',
+        marginBottom: 5,
+    },
 });
 
 export default class App extends Component<{}> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );
-  }
-}
+    constructor(props) {
+        super(props);
+        this.state = {
+            repsToPerform: '',
+            timeEccentric: '',
+            timeBottom: '',
+            timeConcentric: '',
+            timeBetweenReps: '',
+        };
+    }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+    render() {
+        return (
+        <View style={styles.container}>
+            <Text style={styles.welcome}>Tempo Squat Timer</Text>
+
+            <Text>How many reps do you need to perform?</Text>
+            <TextInput
+              keyboardType='numeric'
+              onChangeText={(repsToPerform) => { this.setState({repsToPerform}); }}/>
+
+            <Text>How many seconds do your eccentrics need to take?</Text>
+            <TextInput
+              keyboardType='numeric'
+              onChangeText={(timeEccentric) => { this.setState({timeEccentric}); }}/>
+
+            <Text>How many seconds do your pauses at the bottom of the squat?</Text>
+            <TextInput
+              keyboardType='numeric'
+              onChangeText={(timeBottom) => { this.setState({timeBottom}); }}/>
+
+            <Text>How many seconds do your concentrics need to take?</Text>
+            <TextInput
+              keyboardType='numeric'
+              onChangeText={(timeConcentric) => { this.setState({timeConcentric}); }}/>
+
+            <Text>How many seconds do you need to rest between reps?</Text>
+            <TextInput
+              keyboardType='numeric'
+              onChangeText={(timeBetweenReps) => { this.setState({timeBetweenReps}); }}/>
+        </View>
+        );
+    }
+}
