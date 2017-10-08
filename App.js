@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View
+  View,
+  ScrollView
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -26,9 +27,44 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class App extends Component<{}> {
+export class Input extends Component<{}> {
+    render() {
+        return(
+        <View>
+            <Text>{this.props.children}</Text>
+            <TextInput
+                keyboardType='numeric'
+                returnKeyType='next'
+                selectTextOnFocus={true}
+                blurOnSubmit={false}
+                ref={(input) => {
+                    this.props.inputs[this.props.fieldName] = input;
+                }}
+                onSubmitEditing={() => {
+                    this.props.focusNextField()
+                }}
+                onChangeText={this.props.onChangeText}/>
+        </View>
+        );
+    }
+}
+
+export class ConfigForm extends Component<{}> {
+    render() {
+        return(
+        <View>
+            {this.props.fieldsData.map((data) => {
+
+            })}
+        </View>
+        );
+    }
+}
+
+export default class App extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             repsToPerform: '',
             timeEccentric: '',
@@ -38,36 +74,50 @@ export default class App extends Component<{}> {
         };
     }
 
+    _focusNextField(ref) {
+        return () => {
+            this.refs[ref].focus();
+        }
+    }
+
     render() {
         return (
-        <View style={styles.container}>
+        <ScrollView style={styles.outerContainer}>
             <Text style={styles.welcome}>Tempo Squat Timer</Text>
 
             <Text>How many reps do you need to perform?</Text>
             <TextInput
-              keyboardType='numeric'
-              onChangeText={(repsToPerform) => { this.setState({repsToPerform}); }}/>
+                ref={0}
+                onSubmitEditing={this._focusNextField(1)}
+                returnKeyType={"next"}
+                keyboardType={"numeric"} />
 
             <Text>How many seconds do your eccentrics need to take?</Text>
             <TextInput
-              keyboardType='numeric'
-              onChangeText={(timeEccentric) => { this.setState({timeEccentric}); }}/>
+                ref={1}
+                onSubmitEditing={this._focusNextField(2)}
+                returnKeyType={"next"}
+                keyboardType={"numeric"} />
 
             <Text>How many seconds do your pauses at the bottom of the squat?</Text>
             <TextInput
-              keyboardType='numeric'
-              onChangeText={(timeBottom) => { this.setState({timeBottom}); }}/>
+                ref={2}
+                onSubmitEditing={this._focusNextField(3)}
+                returnKeyType={"next"}
+                keyboardType={"numeric"} />
 
             <Text>How many seconds do your concentrics need to take?</Text>
             <TextInput
-              keyboardType='numeric'
-              onChangeText={(timeConcentric) => { this.setState({timeConcentric}); }}/>
+                ref={3}
+                onSubmitEditing={this._focusNextField(4)}
+                returnKeyType={"next"}
+                keyboardType={"numeric"} />
 
             <Text>How many seconds do you need to rest between reps?</Text>
             <TextInput
-              keyboardType='numeric'
-              onChangeText={(timeBetweenReps) => { this.setState({timeBetweenReps}); }}/>
-        </View>
-        );
+                ref={4}
+                returnKeyType={"next"}
+                keyboardType={"numeric"} />
+        </ScrollView>);
     }
 }
