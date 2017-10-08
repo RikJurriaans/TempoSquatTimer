@@ -38,6 +38,11 @@ export default class App extends Component {
             timeConcentric: '',
             timeBetweenReps: '',
         };
+
+        this.fields = [{label: "How many reps do you need to perform?"},
+                       {label: "How many seconds do your eccentrics need to take?"},
+                       {label: "How many seconds do your pauses at the bottom of the squat?"},
+                       {label: "How many seconds do your concentrics need to take?"}];
     }
 
     _focusNextField(ref) {
@@ -51,39 +56,26 @@ export default class App extends Component {
         <ScrollView style={styles.outerContainer}>
             <Text style={styles.welcome}>Tempo Squat Timer</Text>
 
-            <Text>How many reps do you need to perform?</Text>
-            <TextInput
-                ref={0}
-                onSubmitEditing={this._focusNextField(1)}
-                returnKeyType={"next"}
-                keyboardType={"numeric"} />
+            {this.fields.map((obj, idx) => {
+                let idxPlus1 = idx + 1;
+                return (
+                   <View key={idx}>
+                       <Text>{obj.label}</Text>
+                       <TextInput
+                           ref={idx}
+                           onSubmitEditing={this._focusNextField(idxPlus1)}
+                           returnKeyType={"next"}
+                           keyboardType={"numeric"} />
+                   </View>);
+             })}
 
-            <Text>How many seconds do your eccentrics need to take?</Text>
-            <TextInput
-                ref={1}
-                onSubmitEditing={this._focusNextField(2)}
-                returnKeyType={"next"}
-                keyboardType={"numeric"} />
-
-            <Text>How many seconds do your pauses at the bottom of the squat?</Text>
-            <TextInput
-                ref={2}
-                onSubmitEditing={this._focusNextField(3)}
-                returnKeyType={"next"}
-                keyboardType={"numeric"} />
-
-            <Text>How many seconds do your concentrics need to take?</Text>
-            <TextInput
-                ref={3}
-                onSubmitEditing={this._focusNextField(4)}
-                returnKeyType={"next"}
-                keyboardType={"numeric"} />
-
-            <Text>How many seconds do you need to rest between reps?</Text>
-            <TextInput
-                ref={4}
-                returnKeyType={"next"}
-                keyboardType={"numeric"} />
+            <View>
+                <Text>How many seconds do you need to rest between reps?</Text>
+                <TextInput
+                    ref={this.fields.length}
+                    returnKeyType={"next"}
+                    keyboardType={"numeric"} />
+            </View>
         </ScrollView>);
     }
 }
