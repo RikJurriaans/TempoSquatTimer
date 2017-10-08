@@ -27,40 +27,6 @@ const styles = StyleSheet.create({
     },
 });
 
-export class Input extends Component<{}> {
-    render() {
-        return(
-        <View>
-            <Text>{this.props.children}</Text>
-            <TextInput
-                keyboardType='numeric'
-                returnKeyType='next'
-                selectTextOnFocus={true}
-                blurOnSubmit={false}
-                ref={(input) => {
-                    this.props.inputs[this.props.fieldName] = input;
-                }}
-                onSubmitEditing={() => {
-                    this.props.focusNextField()
-                }}
-                onChangeText={this.props.onChangeText}/>
-        </View>
-        );
-    }
-}
-
-export class ConfigForm extends Component<{}> {
-    render() {
-        return(
-        <View>
-            {this.props.fieldsData.map((data) => {
-
-            })}
-        </View>
-        );
-    }
-}
-
 export default class App extends Component {
     constructor(props) {
         super(props);
