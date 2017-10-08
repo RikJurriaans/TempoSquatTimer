@@ -32,17 +32,18 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            repsToPerform: '',
-            timeEccentric: '',
-            timeBottom: '',
-            timeConcentric: '',
-            timeBetweenReps: '',
+            repsToPerform: null,
+            timeEccentric: null,
+            timeBottom: null,
+            timeConcentric: null,
+            timeBetweenReps: null,
         };
 
-        this.fields = [{label: "How many reps do you need to perform?"},
-                       {label: "How many seconds do your eccentrics need to take?"},
-                       {label: "How many seconds do your pauses at the bottom of the squat?"},
-                       {label: "How many seconds do your concentrics need to take?"}];
+        this.fields = [{label: "How many reps do you need to perform?", stateKey: "repsToPerform"},
+                       {label: "How many seconds do your eccentrics need to take?", stateKey: "timeEccentric"},
+                       {label: "How many seconds do your pauses at the bottom of the squat?", stateKey: "timeBottom"},
+                       {label: "How many seconds do your concentrics need to take?", stateKey: "timeConcentric"},
+                       {label: "How many seconds do you need to rest between reps?", stateKey: "timeBetweenReps"}];
     }
 
     _focusNextField(ref) {
@@ -58,24 +59,21 @@ export default class App extends Component {
 
             {this.fields.map((obj, idx) => {
                 let idxPlus1 = idx + 1;
+                let isLast = this.fields.length == idxPlus1
+
                 return (
                    <View key={idx}>
                        <Text>{obj.label}</Text>
                        <TextInput
                            ref={idx}
-                           onSubmitEditing={this._focusNextField(idxPlus1)}
-                           returnKeyType={"next"}
+                           onSubmitEditing={isLast ? null : this._focusNextField(idxPlus1)}
+                           onChangeText={(text) => {
+                               this.setState[obj.stateKey] = text;
+                           }}
+                           returnKeyType={isLast ? "done" : "next"}
                            keyboardType={"numeric"} />
                    </View>);
              })}
-
-            <View>
-                <Text>How many seconds do you need to rest between reps?</Text>
-                <TextInput
-                    ref={this.fields.length}
-                    returnKeyType={"next"}
-                    keyboardType={"numeric"} />
-            </View>
         </ScrollView>);
     }
 }
