@@ -5,8 +5,13 @@ import {
   Text,
   TextInput,
   View,
-  ScrollView
+  ScrollView,
+  Button
 } from 'react-native';
+import {
+    StackNavigator,
+} from 'react-navigation';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -22,7 +27,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class App extends Component {
+class HomeScreen extends Component {
+    static navigationOptions = {
+        title: 'Config',
+    }
+
     constructor(props) {
         super(props);
 
@@ -48,6 +57,8 @@ export default class App extends Component {
     }
 
     render() {
+        const { navigate } = this.props.navigation;
+
         return (
         <ScrollView style={styles.outerContainer}>
             <Text style={styles.welcome}>Tempo Squat Timer</Text>
@@ -63,12 +74,40 @@ export default class App extends Component {
                            ref={idx}
                            onSubmitEditing={isLast ? null : this._focusNextField(idxPlus1)}
                            onChangeText={(text) => {
-                               this.setState[obj.stateKey] = text;
+                                this.state[obj.stateKey] = text;
                            }}
                            returnKeyType={isLast ? "done" : "next"}
                            keyboardType={"numeric"} />
                    </View>);
              })}
+
+            <Button
+              title="start timer"
+              onPress={() => {
+                  navigate('Timer', this.state)
+              }}/>
         </ScrollView>);
     }
 }
+
+class TimerScreen extends Component {
+    static navigationOptions = ({ navigation }) => ({
+        title: 'Tempo squat timer!',
+    })
+
+    render() {
+        const { params } = this.props.navigation.state;
+        return (
+            <View>
+                <Text>{ params.timeEccentric }</Text>
+            </View>
+        );
+    }
+}
+
+const App = StackNavigator({
+    Home: { screen: HomeScreen },
+    Timer: { screen: TimerScreen }
+})
+
+export default App;
