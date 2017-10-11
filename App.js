@@ -12,26 +12,46 @@ import {
     StackNavigator,
 } from 'react-navigation';
 
+const primary = "#0d47a1";
+const primaryDark = "#002171";
+const primaryLight = "#5472d3";
+const textOnPrimary = "#ffffff";
+
+const secondary = "#ffb300";
+const secondaryDark = "#c68400";
+const secondaryLight = "#ffe54c";
+const textOnSecondary = "#000000";
+
+const background = "#F5F5F6"
 
 const styles = StyleSheet.create({
-    container: {
+    outerContainer: {
+        backgroundColor: background,
+    },
+    headerBar: {
+        backgroundColor: primaryDark,
+    },
+    title: {
+        textAlign: "left",
+        fontSize: 14,
+        color: textOnPrimary,
+        margin: 15,
+    },
+    innerContainer: {
+        margin: 20,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
+    callToAction: {
+        backgroundColor: secondary,
     },
+    buttonText: {
+        color: textOnSecondary,
+    }
 });
 
 class HomeScreen extends Component {
-    static navigationOptions = {
-        title: 'Config',
-    }
-
     constructor(props) {
         super(props);
 
@@ -61,40 +81,42 @@ class HomeScreen extends Component {
 
         return (
         <ScrollView style={styles.outerContainer}>
-            <Text style={styles.welcome}>Tempo Squat Timer</Text>
+            <View style={styles.headerBar}>
+                <Text style={styles.title}>Tempo Squat Timer</Text>
+            </View>
 
-            {this.fields.map((obj, idx) => {
-                let idxPlus1 = idx + 1;
-                let isLast = this.fields.length == idxPlus1
+            <View style={styles.innerContainer}>
+                {this.fields.map((obj, idx) => {
+                    let idxPlus1 = idx + 1;
+                    let isLast = this.fields.length == idxPlus1
 
-                return (
-                   <View key={idx}>
-                       <Text>{obj.label}</Text>
-                       <TextInput
-                           ref={idx}
-                           onSubmitEditing={isLast ? null : this._focusNextField(idxPlus1)}
-                           onChangeText={(text) => {
-                                this.state[obj.stateKey] = text;
-                           }}
-                           returnKeyType={isLast ? "done" : "next"}
-                           keyboardType={"numeric"} />
-                   </View>);
-             })}
+                    return (
+                       <View key={idx}>
+                           <Text>{obj.label}</Text>
+                           <TextInput
+                               ref={idx}
+                               onSubmitEditing={isLast ? null : this._focusNextField(idxPlus1)}
+                               onChangeText={(text) => {
+                                    this.state[obj.stateKey] = text;
+                               }}
+                               returnKeyType={isLast ? "done" : "next"}
+                               keyboardType={"numeric"} />
+                       </View>);
+                 })}
 
-            <Button
-              title="start timer"
-              onPress={() => {
-                  navigate('Timer', this.state)
-              }}/>
+                <Button
+                  style={styles.callToAction}
+                  title="start timer"
+                  color={secondary}
+                  onPress={() => {
+                      navigate('Timer', this.state)
+                  }}/>
+            </View>
         </ScrollView>);
     }
 }
 
 class TimerScreen extends Component {
-    static navigationOptions = ({ navigation }) => ({
-        title: 'Tempo squat timer!',
-    })
-
     render() {
         const { params } = this.props.navigation.state;
         return (
@@ -108,6 +130,8 @@ class TimerScreen extends Component {
 const App = StackNavigator({
     Home: { screen: HomeScreen },
     Timer: { screen: TimerScreen }
+}, {
+    headerMode: "none"
 })
 
 export default App;
