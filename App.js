@@ -24,6 +24,9 @@ const textOnSecondary = "#000000";
 
 const background = "#F5F5F6"
 
+const lineUnselectedColor = "#808081";
+const lineSelectedColor = primaryLight;
+
 const styles = StyleSheet.create({
     outerContainer: {
         backgroundColor: background,
@@ -40,8 +43,24 @@ const styles = StyleSheet.create({
     innerContainer: {
         margin: 20,
         flex: 1,
+        flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
+    },
+    formItem: {
+        flex: 1,
+        flexDirection: 'column',
+        marginTop: 10,
+    },
+    label: {
+        fontSize: 12,
+    },
+    textInput: {
+    },
+    textInputSelected: {
+        color: lineSelectedColor,
+    },
+    textInputUnselected: {
+        color: lineUnselectedColor,
     },
     callToAction: {
         backgroundColor: secondary,
@@ -51,7 +70,7 @@ const styles = StyleSheet.create({
     }
 });
 
-class HomeScreen extends Component {
+class ConfigurationScreen extends Component {
     constructor(props) {
         super(props);
 
@@ -88,14 +107,19 @@ class HomeScreen extends Component {
             <View style={styles.innerContainer}>
                 {this.fields.map((obj, idx) => {
                     let idxPlus1 = idx + 1;
-                    let isLast = this.fields.length == idxPlus1
+                    let isLast = this.fields.length == idxPlus1;
 
                     return (
-                       <View key={idx}>
-                           <Text>{obj.label}</Text>
+                       <View style={styles.formItem} key={idx}>
+                           <Text style={styles.label}>
+                               {obj.label}
+                           </Text>
                            <TextInput
+                               style={styles.textInput}
                                ref={idx}
                                onSubmitEditing={isLast ? null : this._focusNextField(idxPlus1)}
+                               underlineColorAndroid={lineUnselectedColor}
+                               selectTextOnFocus={true}
                                onChangeText={(text) => {
                                     this.state[obj.stateKey] = text;
                                }}
@@ -128,7 +152,7 @@ class TimerScreen extends Component {
 }
 
 const App = StackNavigator({
-    Home: { screen: HomeScreen },
+    Configuration: { screen: ConfigurationScreen },
     Timer: { screen: TimerScreen }
 }, {
     headerMode: "none"
