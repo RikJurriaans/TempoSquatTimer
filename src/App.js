@@ -11,33 +11,19 @@ import {
 import {
     StackNavigator,
 } from 'react-navigation';
-
-const primary = "#0d47a1";
-const primaryDark = "#002171";
-const primaryLight = "#5472d3";
-const textOnPrimary = "#ffffff";
-
-const secondary = "#ffb300";
-const secondaryDark = "#c68400";
-const secondaryLight = "#ffe54c";
-const textOnSecondary = "#000000";
-
-const background = "#F5F5F6"
-
-const lineUnselectedColor = "#808081";
-const lineSelectedColor = primaryLight;
+import Colors from './Colors.js';
 
 const styles = StyleSheet.create({
     outerContainer: {
-        backgroundColor: background,
+        backgroundColor: Colors.background,
     },
     headerBar: {
-        backgroundColor: primaryDark,
+        backgroundColor: Colors.primaryDark,
     },
     title: {
         textAlign: "left",
         fontSize: 14,
-        color: textOnPrimary,
+        color: Colors.textOnPrimary,
         margin: 15,
     },
     innerContainer: {
@@ -57,17 +43,17 @@ const styles = StyleSheet.create({
     textInput: {
     },
     textInputSelected: {
-        color: lineSelectedColor,
+        color: Colors.lineSelectedColor,
     },
     textInputUnselected: {
-        color: lineUnselectedColor,
+        color: Colors.lineUnselectedColor,
     },
-    callToAction: {
-        backgroundColor: secondary,
+    timeDiff: {
     },
-    buttonText: {
-        color: textOnSecondary,
-    }
+    time: {
+        fontSize: 32,
+        textAlign: "center",
+    },
 });
 
 class ConfigurationScreen extends Component {
@@ -118,7 +104,7 @@ class ConfigurationScreen extends Component {
                                style={styles.textInput}
                                ref={idx}
                                onSubmitEditing={isLast ? null : this._focusNextField(idxPlus1)}
-                               underlineColorAndroid={lineUnselectedColor}
+                               underlineColorAndroid={Colors.lineUnselectedColor}
                                selectTextOnFocus={true}
                                onChangeText={(text) => {
                                     this.state[obj.stateKey] = text;
@@ -131,20 +117,29 @@ class ConfigurationScreen extends Component {
                 <Button
                   style={styles.callToAction}
                   title="start timer"
-                  color={secondary}
-                  onPress={() => {
-                      navigate('Timer', this.state)
-                  }}/>
+                  color={Colors.secondary}
+                  onPress={() => {navigate('Timer', this.state)}}/>
             </View>
         </ScrollView>);
     }
 }
 
 class TimerScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            secondsLeft: 0,
+        }
+    }
+
     render() {
         const { params } = this.props.navigation.state;
         return (
             <View>
+                <Text style={styles.time}>
+                    {this.state.secondsLeft}
+                </Text>
+                <Text>hello</Text>
                 <Text>{ params.timeEccentric }</Text>
             </View>
         );
