@@ -11,10 +11,7 @@ import {
 import { StackNavigator } from 'react-navigation';
 import Screens from './screens/Screens.js';
 
-const App = StackNavigator({
-    ConfigurationScreen: { screen: Screens.ConfigurationScreen },
-    Timer: { screen: Screens.TimerScreen }
-}, {
+const App = StackNavigator(Screens, {
     headerMode: "none"
 })
 
