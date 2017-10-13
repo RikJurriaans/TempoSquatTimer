@@ -61,8 +61,6 @@ export default class TimerScreen extends Component {
                                      return !(state.name == "pause" && state.duration == 0);
                                  }));
 
-        console.log(allStates);
-
         var currentState = _.head(allStates);
 
         this.state = {
@@ -78,13 +76,17 @@ export default class TimerScreen extends Component {
     }
 
     _toNextState() {
-        if (this.state.currentStateIndex == this.state.states.length - 1)
+        var s = this.state;
+
+        if (s.currentStateIndex == s.states.length - 1)
             return;
 
-        var newCurrentStateIndex = this.state.currentStateIndex + 1;
-        this.setState({ currentState: this.state.states[newCurrentStateIndex],
+        var newCurrentStateIndex = s.currentStateIndex + 1;
+        var newCurrentState = s.states[newCurrentStateIndex];
+
+        this.setState({ currentState: newCurrentState,
                         currentStateIndex: newCurrentStateIndex });
-        setTimeout(this._toNextState, toMillis(this.state.states[newCurrentStateIndex].duration));
+        setTimeout(this._toNextState, toMillis(newCurrentState.duration));
     }
 
     render() {
