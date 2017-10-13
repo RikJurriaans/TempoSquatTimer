@@ -48,22 +48,26 @@ export default class TimerScreen extends Component {
                             stateFactory("pause", params.timeBottom),
                             stateFactory("concentric", params.timeConcentric),
                             stateFactory("next rep", params.timeBetweenReps)];
-        var allStates = _.merge([stateFactory("eccentric", params.timeEccentric)],
-                                cycle(uniqueStates, params.repsToPerform))
-        console.log(allStates);
+        var allStates = _.concat([stateFactory("unrack", params.timeEccentric)],
+                                 cycle(uniqueStates, params.repsToPerform))
+
+        console.log(_.head(allStates));
 
         this.state = {
             states: allStates,
-            currentState: 0,
+            currentState: _.head(allStates),
             secondsLeft: 0,
         }
 
         this._toNextState = this._toNextState.bind(this);
+
         /* setTimeout(this._toNextState, this.state.states[0]);*/
     }
 
     _toNextState() {
-        this.state.states
+        /* var currentStateIndex = this.state.currentState + 1;*/
+        /* this.setState({ currentState: this.state.states[currentStateIndex] });*/
+        /* setTimeout(this._toNextState, this.state.states[currentStateIndex + 1]);*/
     }
 
     render() {
@@ -71,10 +75,8 @@ export default class TimerScreen extends Component {
         return (
             <View>
                 <Text style={styles.time}>
-                {this.state.secondsLeft}
-            </Text>
-                <Text>hello</Text>
-                <Text>{ params.timeEccentric }</Text>
+                    { this.state.currentState.stateName }
+                </Text>
             </View>
         );
     }
