@@ -27,7 +27,7 @@ class State {
         this.description = stateDescription;
 
         if (stateName == "concentric" && stateDuration == 0) {
-            this.duration += 1;
+            this.duration += 2;
         }
     }
 }
@@ -56,10 +56,13 @@ export default class TimerScreen extends Component {
                             new State("concentric", params.timeConcentric,  "Up"),
                             new State("next rep",   params.timeBetweenReps, "Wait for next rep")];
 
-        var allStates = _.concat([new State("unrack", 5, "Unrack the bar")],
-                                 _.filter(cycle(uniqueStates, params.repsToPerform), function(state) {
-                                     return !(state.name == "pause" && state.duration == 0);
-                                 }));
+        var allStates = _.concat(_.concat([new State("unrack", 5, "Unrack the bar")],
+                                          _.filter(cycle(uniqueStates, params.repsToPerform), function(state) {
+                                              return !(state.name == "pause" && state.duration == 0);
+                                          })),
+                                 [new State("next set", null, "Click to do your next set")]);
+
+        console.log(allStates);
 
         var currentState = _.head(allStates);
 
@@ -68,6 +71,7 @@ export default class TimerScreen extends Component {
             currentState: currentState,
             currentStateIndex: 0,
             secondsCounter: currentState.duration,
+            showNextButton: false,
         }
 
         this._toNextState = this._toNextState.bind(this);
@@ -86,7 +90,12 @@ export default class TimerScreen extends Component {
 
         this.setState({ currentState: newCurrentState,
                         currentStateIndex: newCurrentStateIndex });
-        setTimeout(this._toNextState, toMillis(newCurrentState.duration));
+
+        if (newCurrentState.duration != null) {
+            setTimeout(this._toNextState, toMillis(newCurrentState.duration));
+        } else {
+            this.setState({ showNextButton: true });
+        }
     }
 
     render() {
@@ -97,6 +106,14 @@ export default class TimerScreen extends Component {
                     { this.state.secondsCounter }
                     { this.state.currentState.description }
                 </Text>
+                { this.state.showNextButton ?
+                    <Button
+                        title="perform another set"
+                        onPress={() => {
+                            console.log("Repeat process...");
+                        }}/>
+                    :
+                    <View></View> }
             </View>
         );
     }

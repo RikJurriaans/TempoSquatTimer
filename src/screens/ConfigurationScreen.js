@@ -52,7 +52,7 @@ export default class ConfigurationScreen extends Component {
         super(props);
 
         this.state = {
-            repsToPerform: 5,
+            repsToPerform: 1,
             timeEccentric: 4,
             timeBottom: 0,
             timeConcentric: 0,
