@@ -9,6 +9,12 @@ import {
     Button
 } from 'react-native';
 
+const styles = StyleSheet.create({
+    time: {
+        fontSize: 34,
+    },
+});
+
 export default class TimerScreen extends Component {
     constructor(props) {
         super(props);

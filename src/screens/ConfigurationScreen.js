@@ -52,11 +52,11 @@ export default class ConfigurationScreen extends Component {
         super(props);
 
         this.state = {
-            repsToPerform: null,
-            timeEccentric: null,
-            timeBottom: null,
-            timeConcentric: null,
-            timeBetweenReps: null,
+            repsToPerform: 5,
+            timeEccentric: 4,
+            timeBottom: 0,
+            timeConcentric: 0,
+            timeBetweenReps: 5,
         };
 
         this.fields = [{label: "How many reps do you need to perform?", stateKey: "repsToPerform"},
@@ -95,6 +95,7 @@ export default class ConfigurationScreen extends Component {
                                style={styles.textInput}
                                ref={idx}
                                onSubmitEditing={isLast ? null : this._focusNextField(idxPlus1)}
+                               value={this.state[obj.stateKey].toString()}
                                underlineColorAndroid={Colors.lineUnselectedColor}
                                selectTextOnFocus={true}
                                onChangeText={(text) => {
@@ -109,7 +110,7 @@ export default class ConfigurationScreen extends Component {
                   style={styles.callToAction}
                   title="start timer"
                   color={Colors.secondary}
-                  onPress={() => {navigate('Timer', this.state)}}/>
+                  onPress={() => {navigate('TimerScreen', this.state)}}/>
             </View>
         </ScrollView>);
     }
