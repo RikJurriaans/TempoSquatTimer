@@ -10,12 +10,6 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-const styles = StyleSheet.create({
-    time: {
-        fontSize: 34,
-    },
-});
-
 class State {
     name: null
     duration: null
@@ -64,11 +58,9 @@ export default class TimerScreen extends Component {
 
         let allStates = _.concat(_.dropRight(_.concat(unrackCommand, filteredTimelessPauses)), nextSetCommand);
 
-        let currentState = _.head(allStates);
-
         this.state = Object.assign({
             states: allStates,
-        }, this._getNullState(currentState));
+        }, this._getNullState(_.head(allStates)));
 
         this._toNextState = this._toNextState.bind(this);
         this._countDownSecond = this._countDownSecond.bind(this);
@@ -77,8 +69,7 @@ export default class TimerScreen extends Component {
     }
 
     _rewindState() {
-        let currentState = _.head(this.state.states);
-        this.setState(this._getNullState(currentState));
+        this.setState(this._getNullState(_.head(this.state.states)));
     }
 
     _getNullState(currentState) {
@@ -129,8 +120,8 @@ export default class TimerScreen extends Component {
         const { params } = this.props.navigation.state;
         return (
             <View>
-                <Text>{ this.state.currentState.description }</Text>
                 <Text style={styles.time}>{ this.state.secondsCounter }</Text>
+                <Text>{ this.state.currentState.description }</Text>
                 { this.state.showNextButton ?
                     <Button
                         title="perform another set"
@@ -140,7 +131,12 @@ export default class TimerScreen extends Component {
                         }}/>
                     :
                     <View></View> }
-            </View>
-        );
+            </View>);
     }
 }
+
+const styles = StyleSheet.create({
+    time: {
+        fontSize: 34,
+    },
+});

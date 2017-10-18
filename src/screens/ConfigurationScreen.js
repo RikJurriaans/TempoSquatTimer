@@ -10,43 +10,6 @@ import {
 } from 'react-native';
 import Colors from '../Colors.js';
 
-const styles = StyleSheet.create({
-    outerContainer: {
-        backgroundColor: Colors.background,
-    },
-    headerBar: {
-        backgroundColor: Colors.primaryDark,
-    },
-    title: {
-        textAlign: "left",
-        fontSize: 14,
-        color: Colors.textOnPrimary,
-        margin: 15,
-    },
-    innerContainer: {
-        margin: 20,
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-    },
-    formItem: {
-        flex: 1,
-        flexDirection: 'column',
-        marginTop: 10,
-    },
-    label: {
-        fontSize: 12,
-    },
-    textInput: {
-    },
-    textInputSelected: {
-        color: Colors.lineSelectedColor,
-    },
-    textInputUnselected: {
-        color: Colors.lineUnselectedColor,
-    },
-});
-
 export default class ConfigurationScreen extends Component {
     constructor(props) {
         super(props);
@@ -92,17 +55,17 @@ export default class ConfigurationScreen extends Component {
                                {obj.label}
                            </Text>
                            <TextInput
-                               style={styles.textInput}
-                               ref={idx}
-                               onSubmitEditing={isLast ? null : this._focusNextField(idxPlus1)}
-                               value={this.state[obj.stateKey].toString()}
-                               underlineColorAndroid={Colors.lineUnselectedColor}
-                               selectTextOnFocus={true}
-                               onChangeText={(text) => {
-                                    this.state[obj.stateKey] = text;
-                               }}
-                               returnKeyType={isLast ? "done" : "next"}
-                               keyboardType={"numeric"} />
+                             style={styles.textInput}
+                             ref={idx}
+                             onSubmitEditing={isLast ? null : this._focusNextField(idxPlus1)}
+                             value={this.state[obj.stateKey].toString()}
+                             underlineColorAndroid={Colors.lineUnselectedColor}
+                             selectTextOnFocus={true}
+                             onChangeText={(text) => {
+                                 this.state[obj.stateKey] = text;
+                             }}
+                             returnKeyType={isLast ? "done" : "next"}
+                             keyboardType={"numeric"} />
                        </View>);
                  })}
 
@@ -115,3 +78,40 @@ export default class ConfigurationScreen extends Component {
         </ScrollView>);
     }
 }
+
+const styles = StyleSheet.create({
+    outerContainer: {
+        backgroundColor: Colors.background,
+    },
+    headerBar: {
+        backgroundColor: Colors.primaryDark,
+    },
+    title: {
+        textAlign: "left",
+        fontSize: 14,
+        color: Colors.textOnPrimary,
+        margin: 15,
+    },
+    innerContainer: {
+        margin: 20,
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    formItem: {
+        flex: 1,
+        flexDirection: 'column',
+        marginTop: 10,
+    },
+    label: {
+        fontSize: 12,
+    },
+    textInput: {
+    },
+    textInputSelected: {
+        color: Colors.lineSelectedColor,
+    },
+    textInputUnselected: {
+        color: Colors.lineUnselectedColor,
+    },
+});
