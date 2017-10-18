@@ -46,21 +46,24 @@ function toMillis(seconds) {
 }
 
 export default class TimerScreen extends Component {
+    intervalId: null;
+
     constructor(props) {
         super(props);
 
         let { params } = this.props.navigation.state;
 
-        let uniqueStates = [new State("eccentric",  params.timeEccentric,   "Down"),
-                            new State("pause",      params.timeBottom,      "Pause"),
-                            new State("concentric", params.timeConcentric,  "Up"),
-                            new State("next rep",   params.timeBetweenReps, "Wait for next rep")];
+        let uniqueStates   = [new State("eccentric",  params.timeEccentric,   "Down"),
+                              new State("pause",      params.timeBottom,      "Pause"),
+                              new State("concentric", params.timeConcentric,  "Up"),
+                              new State("next rep",   params.timeBetweenReps, "Wait for next rep")];
 
-        let allStates = _.concat(_.concat([new State("unrack", 5, "Unrack the bar")],
-                                          _.filter(cycle(uniqueStates, params.repsToPerform), function(state) {
-                                              return !(state.name == "pause" && state.duration == 0);
-                                          })),
-                                 [new State("next set", null, "Click to do your next set")]);
+        let unrackCommand  = [new State("unrack", 5, "Unrack the bar")];
+        let nextSetCommand = [new State("next set", null, "Click to do your next set")];
+        let cycledStates = cycle(uniqueStates, params.repsToPerform);
+        let filteredTimelessPauses = _.filter(cycledStates, state => !(state.name == "pause" && state.duration == 0));
+
+        let allStates = _.concat(_.dropRight(_.concat(unrackCommand, filteredTimelessPauses)), nextSetCommand);
 
         let currentState = _.head(allStates);
 
@@ -75,16 +78,18 @@ export default class TimerScreen extends Component {
         this._toNextState = this._toNextState.bind(this);
         this._countDownSecond = this._countDownSecond.bind(this);
 
-        /* setTimeout(, toMillis(currentState.duration));*/
-        setInterval(this._countDownSecond, 1000);
+        this._startNewSet();
     }
 
-    _removeTimeout() {
-        return;
+    _startNewSet() {
+        intervalId = setInterval(this._countDownSecond, 1000);
     }
 
     _countDownSecond() {
-        if (this.state.currentState.name == "next set") return; // this._removeTimeout();
+        if (this.state.currentState.name == "next set") {
+            clearTimeout(intervalId);
+            return;
+        }
         if (this.state.secondsCounter == 0) {
             this._toNextState();
             return;
