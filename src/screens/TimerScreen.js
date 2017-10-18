@@ -66,18 +66,28 @@ export default class TimerScreen extends Component {
 
         let currentState = _.head(allStates);
 
-        this.state = {
+        this.state = Object.assign({
             states: allStates,
-            currentState: currentState,
-            currentStateIndex: 0,
-            secondsCounter: currentState.duration,
-            showNextButton: false,
-        }
+        }, this._getNullState(currentState));
 
         this._toNextState = this._toNextState.bind(this);
         this._countDownSecond = this._countDownSecond.bind(this);
 
         this._startNewSet();
+    }
+
+    _rewindState() {
+        let currentState = _.head(this.state.states);
+        this.setState(this._getNullState(currentState));
+    }
+
+    _getNullState(currentState) {
+        return {
+            currentState: currentState,
+            currentStateIndex: 0,
+            secondsCounter: currentState.duration,
+            showNextButton: false,
+        };
     }
 
     _startNewSet() {
@@ -125,7 +135,8 @@ export default class TimerScreen extends Component {
                     <Button
                         title="perform another set"
                         onPress={() => {
-                            console.log("Repeat process...");
+                            this._rewindState();
+                            this._startNewSet();
                         }}/>
                     :
                     <View></View> }
