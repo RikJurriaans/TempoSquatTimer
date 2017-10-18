@@ -13,6 +13,6 @@ import Screens from './screens/Screens.js';
 
 const App = StackNavigator(Screens, {
     headerMode: "none"
-})
+});
 
 export default App;
