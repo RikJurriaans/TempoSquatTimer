@@ -26,14 +26,6 @@ class State {
     }
 }
 
-function cycle(array, count) {
-    var res = [];
-    for (var i = count; i > 0; i--) {
-        res = _.concat(res, array);
-    }
-    return res;
-}
-
 function toMillis(seconds) {
     return seconds * 1000;
 }
@@ -53,7 +45,7 @@ export default class TimerScreen extends Component {
 
         let unrackCommand  = [new State("unrack", 5, "Unrack the bar")];
         let nextSetCommand = [new State("next set", null, "Click to do your next set")];
-        let cycledStates = cycle(uniqueStates, params.repsToPerform);
+        let cycledStates = _.flatten(_.times(params.repsToPerform, uniqueStates));
         let filteredTimelessPauses = _.filter(cycledStates, state => !(state.name == "pause" && state.duration == 0));
 
         let allStates = _.concat(_.dropRight(_.concat(unrackCommand, filteredTimelessPauses)), nextSetCommand);
